@@ -1,0 +1,618 @@
+MONGO DB 
+console.clear() --- this will clear the consle 
+
+
+
+
+
+
+
+show dbs -- this command will show all db which are having collections in them empty db will not be show 
+
+use dbname -- it will help to change the db or used to create new db 
+
+db.collection_name.insert({name:"vaibhav"}); --this will also insert the document in collection
+
+db.collection_name.insertOne({name:"vaibhav"}); -- insertOne command is use to insert one Document 
+example:- db.emp.insertOne({eno:1,ename:'Vaibhav'})
+
+db.collection_name.insertMany([{name:"v"},{name:"va"},{name:"vai"}]);-- it will help to insert many documents
+db.emp.insertMany([{eno:2,emane:'rajesh'},{eno:3,ename:'mahesh'},{eno:4,ename:'rakesh'}])
+
+show collections -- will print all collections in the current db
+db.collection_name.drop() -- will the collection_name from the db if it exists
+db.dropDatabse() -- this will drop the current database only 
+db.collection_name.find() -- this will show all the documents from the collection_name with hash id 
+db.collection_name.find({condition}) -- this will show all the document with given condition
+knowit> db.emp.find({eno:1})
+output:-
+[
+  {
+    _id: ObjectId("6383106a667f35880f4de273"),
+    eno: 1,
+    ename: 'Vaibhav'
+  }
+]
+
+
+db.emp.countDocuments() -- this will give number of document available in collection 
+
+
+db.inventory.insertMany([
+   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "A" },
+   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" }
+]);
+
+
+ db.inventory.find()
+output:=
+[
+  {
+    _id: ObjectId("63832d75667f35880f4de277"),
+    item: 'journal',
+    qty: 25,
+    size: { h: 14, w: 21, uom: 'cm' },
+    status: 'A'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de278"),
+    item: 'notebook',
+    qty: 50,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'A'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de279"),
+    item: 'paper',
+    qty: 100,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'D'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de27a"),
+    item: 'planner',
+    qty: 75,
+    size: { h: 22.85, w: 30, uom: 'cm' },
+    status: 'D'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de27b"),
+    item: 'postcard',
+    qty: 45,
+    size: { h: 10, w: 15.25, uom: 'cm' },
+    status: 'A'
+  }
+]
+
+ db.inventory.find({status:'D'})
+output:=
+[
+  {
+    _id: ObjectId("63832d75667f35880f4de279"),
+    item: 'paper',
+    qty: 100,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'D'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de27a"),
+    item: 'planner',
+    qty: 75,
+    size: { h: 22.85, w: 30, uom: 'cm' },
+    status: 'D'
+  }
+]
+
+ db.inventory.find({status:{$in:['A','D']}})
+output:=
+[
+  {
+    _id: ObjectId("63832d75667f35880f4de277"),
+    item: 'journal',
+    qty: 25,
+    size: { h: 14, w: 21, uom: 'cm' },
+    status: 'A'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de278"),
+    item: 'notebook',
+    qty: 50,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'A'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de279"),
+    item: 'paper',
+    qty: 100,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'D'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de27a"),
+    item: 'planner',
+    qty: 75,
+    size: { h: 22.85, w: 30, uom: 'cm' },
+    status: 'D'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de27b"),
+    item: 'postcard',
+    qty: 45,
+    size: { h: 10, w: 15.25, uom: 'cm' },
+    status: 'A'
+  }
+]
+
+db.inventory.find({status:'A',qty:{$lt:50}})
+output:=
+[
+  {
+    _id: ObjectId("63832d75667f35880f4de277"),
+    item: 'journal',
+    qty: 25,
+    size: { h: 14, w: 21, uom: 'cm' },
+    status: 'A'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de27b"),
+    item: 'postcard',
+    qty: 45,
+    size: { h: 10, w: 15.25, uom: 'cm' },
+    status: 'A'
+  }
+]
+----------NESTED QUERY------
+db.inventory.find({status:'A',"size.uom":'in'})
+output:=
+[
+  {
+    _id: ObjectId("63832d75667f35880f4de278"),
+    item: 'notebook',
+    qty: 50,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'A'
+  }
+]
+
+db.inventory.find({status:'A',"size.h":{$lt:20},"size.uom":'cm'})
+output:=
+
+[
+  {
+    _id: ObjectId("63832d75667f35880f4de277"),
+    item: 'journal',
+    qty: 25,
+    size: { h: 14, w: 21, uom: 'cm' },
+    status: 'A'
+  },
+  {
+    _id: ObjectId("63832d75667f35880f4de27b"),
+    item: 'postcard',
+    qty: 45,
+    size: { h: 10, w: 15.25, uom: 'cm' },
+    status: 'A'
+  }
+]
+
+
+
+-----------------------ADDING MORE DOCUMENT IN COLLECTION INVENTERY-------------------
+db.inventory.insertMany([
+   { item: "journal", qty: 25, tags: ["blank", "red"], dim_cm: [ 14, 21 ] },
+   { item: "notebook", qty: 50, tags: ["red", "blank"], dim_cm: [ 14, 21 ] },
+   { item: "paper", qty: 100, tags: ["red", "blank", "plain"], dim_cm: [ 14, 21 ] },
+   { item: "planner", qty: 75, tags: ["blank", "red"], dim_cm: [ 22.85, 30 ] },
+   { item: "postcard", qty: 45, tags: ["blue"], dim_cm: [ 10, 15.25 ] }
+]);
+
+db.inventory.find({tags:['red','blank']})
+output:=
+[
+  {
+    _id: ObjectId("638338b2667f35880f4de27d"),
+    item: 'notebook',
+    qty: 50,
+    tags: [ 'red', 'blank' ],
+    dim_cm: [ 14, 21 ]
+  }
+]
+
+db.inventory.find({tags:{$all:['red','blank']}})
+output:=
+[
+  {
+    _id: ObjectId("638338b2667f35880f4de27c"),
+    item: 'journal',
+    qty: 25,
+    tags: [ 'blank', 'red' ],
+    dim_cm: [ 14, 21 ]
+  },
+  {
+    _id: ObjectId("638338b2667f35880f4de27d"),
+    item: 'notebook',
+    qty: 50,
+    tags: [ 'red', 'blank' ],
+    dim_cm: [ 14, 21 ]
+  },
+  {
+    _id: ObjectId("638338b2667f35880f4de27e"),
+    item: 'paper',
+    qty: 100,
+    tags: [ 'red', 'blank', 'plain' ],
+    dim_cm: [ 14, 21 ]
+  },
+  {
+    _id: ObjectId("638338b2667f35880f4de27f"),
+    item: 'planner',
+    qty: 75,
+    tags: [ 'blank', 'red' ],
+    dim_cm: [ 22.85, 30 ]
+  }
+]
+
+db.inventory.find({tags: { $all: ['red','black']} ,tags:{$size: 2}})
+output:=
+[
+  {
+    _id: ObjectId("638338b2667f35880f4de27c"),
+    item: 'journal',
+    qty: 25,
+    tags: [ 'blank', 'red' ],
+    dim_cm: [ 14, 21 ]
+  },
+  {
+    _id: ObjectId("638338b2667f35880f4de27d"),
+    item: 'notebook',
+    qty: 50,
+    tags: [ 'red', 'blank' ],
+    dim_cm: [ 14, 21 ]
+  },
+  {
+    _id: ObjectId("638338b2667f35880f4de27f"),
+    item: 'planner',
+    qty: 75,
+    tags: [ 'blank', 'red' ],
+    dim_cm: [ 22.85, 30 ]
+  }
+]
+
+db.inventory.find({"tags.1":'blank'})  ------- here "tags.1" refers to index of lisrt of tag i.e, 1 referes to blank 
+output:=
+[
+  {
+    _id: ObjectId("638338b2667f35880f4de27d"),
+    item: 'notebook',
+    qty: 50,
+    tags: [ 'red', 'blank' ],
+    dim_cm: [ 14, 21 ]
+  },
+  {
+    _id: ObjectId("638338b2667f35880f4de27e"),
+    item: 'paper',
+    qty: 100,
+    tags: [ 'red', 'blank', 'plain' ],
+    dim_cm: [ 14, 21 ]
+  }
+]
+
+ db.inventory.find({tags:{$all:['red','blank']}},{_id:0,item:1,tags:1,dim_cm:1})  ------------ not to get _id in result and also get speific fields from documents
+output:=
+[
+  { item: 'journal', tags: [ 'blank', 'red' ], dim_cm: [ 14, 21 ] },
+  { item: 'notebook', tags: [ 'red', 'blank' ], dim_cm: [ 14, 21 ] },
+  {item: 'paper',tags: [ 'red', 'blank', 'plain' ],dim_cm: [ 14, 21 ]},
+  { item: 'planner', tags: [ 'blank', 'red' ], dim_cm: [ 22.85, 30 ] }
+]
+
+db.inventory.find({},{_id:0,item:1,qty:1,"size.uom":1})--- to get nested data from field 
+output:=
+[
+  { item: 'journal', qty: 25, size: { uom: 'cm' } },
+  { item: 'notebook', qty: 50, size: { uom: 'in' } },
+  { item: 'paper', qty: 100, size: { uom: 'in' } },
+  { item: 'planner', qty: 75, size: { uom: 'cm' } },
+  { item: 'postcard', qty: 45, size: { uom: 'cm' } },
+  { item: 'journal', qty: 25 },
+  { item: 'notebook', qty: 50 },
+  { item: 'paper', qty: 100 },
+  { item: 'planner', qty: 75 },
+  { item: 'postcard', qty: 45 }
+]
+
+----------------------UPDATE DOCUMENT------------
+db.inventory.insertMany( [
+   { item: "canvas", qty: 100, size: { h: 28, w: 35.5, uom: "cm" }, status: "A" },
+   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "mat", qty: 85, size: { h: 27.9, w: 35.5, uom: "cm" }, status: "A" },
+   { item: "mousepad", qty: 25, size: { h: 19, w: 22.85, uom: "cm" }, status: "P" },
+   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "P" },
+   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" },
+   { item: "sketchbook", qty: 80, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "sketch pad", qty: 95, size: { h: 22.85, w: 30.5, uom: "cm" }, status: "A" }
+] );
+
+----update methods:(SYNTAX)
+db.collection.updateOne(<filter>, <update>, <options>)
+db.collection.updateMany(<filter>, <update>, <options>)
+db.collection.replaceOne(<filter>, <update>, <options>)
+----update operator :- 
+$currentDate ;$inc; $min; $max; $mul; $rename; $set; $setOnInsert; $unset 
+----BEFORE QUERY---
+db.inventory.find({item:'paper'},{_id:0})
+output:=
+[
+ {
+    item: 'paper',
+    qty: 100,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'D'
+  }
+] 
+---UPDATE QUERY---
+db.inventory.updateOne({item:"paper"},{$set:{"size.uom":"cm",status:'P'}})
+output:=
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+----AFTER QUERY----
+db.inventory.find({item:'paper'},{_id:0})
+output:=
+[
+  {
+    item: 'paper',
+    qty: 100,
+    size: { h: 8.5, w: 11, uom: 'cm' },
+    status: 'P'
+  }
+]
+----ADDING NEW FIELD AS CURRENT DATE -----
+db.inventory.updateOne({item:'paper'},{$set:{'size.uom':'cm',status:'S'},$currentDate:{lastModified:true}})
+output:=
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+db.inventory.find({status:'S'})
+output:=
+[
+  {
+    _id: ObjectId("63833fc3667f35880f4de290"),
+    item: 'paper',
+    qty: 100,
+    size: { h: 8.5, w: 11, uom: 'cm' },
+    status: 'S',
+    lastModified: ISODate("2022-11-27T11:34:34.179Z")
+  }
+]
+-----UPDATE MANY DOCUMENTS-----
+-BEFORE UPDATE QUERY---
+ db.inventory.find({status:'P'})
+output:=
+[
+  {
+    _id: ObjectId("63833fc3667f35880f4de28e"),
+    item: 'mousepad',
+    qty: 25,
+    size: { h: 19, w: 22.85, uom: 'cm' },
+    status: 'P'
+  },
+  {
+    _id: ObjectId("63833fc3667f35880f4de28f"),
+    item: 'notebook',
+    qty: 50,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'P'
+  }
+]
+----UPDATE QUERY----
+db.inventory.updateMany({status:'P'},{$set:{qty:1}})
+output:=
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+----AFTER UPDATE QUERY---
+db.inventory.find({status:'P'})
+output:=
+[
+  {
+    _id: ObjectId("63833fc3667f35880f4de28e"),
+    item: 'mousepad',
+    qty: 1,
+    size: { h: 19, w: 22.85, uom: 'cm' },
+    status: 'P'
+  },
+  {
+    _id: ObjectId("63833fc3667f35880f4de28f"),
+    item: 'notebook',
+    qty: 1,
+    size: { h: 8.5, w: 11, uom: 'in' },
+    status: 'P'
+  }
+]
+----------REPLACE QUERY----
+----BEFORE---
+db.inventory.find({status:'S'})
+output:=
+[
+  {
+    _id: ObjectId("63833fc3667f35880f4de290"),
+    item: 'paper',
+    qty: 100,
+    size: { h: 8.5, w: 11, uom: 'cm' },
+    status: 'S',
+    lastModified: ISODate("2022-11-27T11:34:34.179Z")
+  }
+]
+---REPLACE QUERY----
+db.inventory.replaceOne({status:'S'},{name:'Vaibhav'})
+output:=
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+---AFTER----
+db.inventory.find({status:'S'}) ---WE REPALCE THIS SO NO OUTPUT
+
+db.inventory.find({name:'Vaibhav'})--- AFTER REPLACE WE CAN FIND THIS 
+output:=
+[ { _id: ObjectId("63833fc3667f35880f4de290"), name: 'Vaibhav' } ]
+
+-------INSERTING DATA IF NOT AVAILABLE USING UPDATE QUERY------
+----BEFORE---
+db.inventory.find({status:'S'})---  AS THIS IS NOT AVAILABLE 
+
+----UPDATE TO SET NEW DOCUMENT----
+db.inventory.updateOne({status:'S'},{$set:{item:'mobile_stand'}},{upsert:true})
+output:=
+{
+  acknowledged: true,
+  insertedId: ObjectId("63835020d1d3c87ba7321584"),
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 1
+}
+----AFTER UPDATE QUERY NEW DOCUMENT IS ADDED----
+db.inventory.find({status:'S'})
+output:=
+[
+  {
+    _id: ObjectId("63835020d1d3c87ba7321584"),
+    status: 'S',
+    item: 'mobile_stand'
+  }
+]
+
+
+-----------------DELETE DOCUMENT---------
+db.Collection_name.deleteMany({})  ---- this will delete all documment from collection 
+
+db.inventory.insertMany( [
+   { item: "journal", qty: 25, size: { h: 14, w: 21, uom: "cm" }, status: "A" },
+   { item: "notebook", qty: 50, size: { h: 8.5, w: 11, uom: "in" }, status: "P" },
+   { item: "paper", qty: 100, size: { h: 8.5, w: 11, uom: "in" }, status: "D" },
+   { item: "planner", qty: 75, size: { h: 22.85, w: 30, uom: "cm" }, status: "D" },
+   { item: "postcard", qty: 45, size: { h: 10, w: 15.25, uom: "cm" }, status: "A" },
+] );
+
+db.inventory.deleteMany({status:'A'})--- this will delete the documents where status:'A' else will remain same
+db.inventory.deleteMany({'size.uom':'in'})--- this will delete the documents where size(uom:'in') 
+------- CREATE INDEX FOR FAST PERFORMANACE--------
+db.inventory.createIndex({state:1})
+db.inventory.find({},{}).explain("executionStats")---- this will show the details about the query execution with time and performanacce
+ db.inventory.dropIndex({state:1})--- this will drop the created inndex
+--------------GETTING NUMBER OF AS REQUIRED------
+HERE WE WILL USE LIMIT() FUNCTION TO 
+db.inventory.find({},{_id:0}).limit(1) --- limit(1) to get single document
+-
+-
+-
+-
+-------AGGREGATION PIPELINE-------
+db.orders.insertMany( [
+   { _id: 0, name: "Pepperoni", size: "small", price: 19,
+     quantity: 10, date: ISODate( "2021-03-13T08:14:30Z" ) },
+   { _id: 1, name: "Pepperoni", size: "medium", price: 20,
+     quantity: 20, date : ISODate( "2021-03-13T09:13:24Z" ) },
+   { _id: 2, name: "Pepperoni", size: "large", price: 21,
+     quantity: 30, date : ISODate( "2021-03-17T09:22:12Z" ) },
+   { _id: 3, name: "Cheese", size: "small", price: 12,
+     quantity: 15, date : ISODate( "2021-03-13T11:21:39.736Z" ) },
+   { _id: 4, name: "Cheese", size: "medium", price: 13,
+     quantity:50, date : ISODate( "2022-01-12T21:23:13.331Z" ) },
+   { _id: 5, name: "Cheese", size: "large", price: 14,
+     quantity: 10, date : ISODate( "2022-01-12T05:08:13Z" ) },
+   { _id: 6, name: "Vegan", size: "small", price: 17,
+     quantity: 10, date : ISODate( "2021-01-13T05:08:13Z" ) },
+   { _id: 7, name: "Vegan", size: "medium", price: 18,
+     quantity: 10, date : ISODate( "2021-01-13T05:10:13Z" ) }
+] )
+
+db.orders.aggregate({$match:{size:'medium'}})
+output:=
+[
+  {
+    _id: 1,
+    name: 'Pepperoni',
+    size: 'medium',
+    price: 20,
+    quantity: 20,
+    date: ISODate("2021-03-13T09:13:24.000Z")
+  },
+  {
+    _id: 4,
+    name: 'Cheese',
+    size: 'medium',
+    price: 13,
+    quantity: 50,
+    date: ISODate("2022-01-12T21:23:13.331Z")
+  },
+  {
+    _id: 7,
+    name: 'Vegan',
+    size: 'medium',
+    price: 18,
+    quantity: 10,
+    date: ISODate("2021-01-13T05:10:13.000Z")
+  }
+]
+
+----	USING $GROUP FUNCTION TO FIND THE SPECIFIC OUTPUT WHICH IS PREDICTED ---------
+db.orders.aggregate([{$match:{size:'large'}},{$group:{_id:'$name',totlaQuantity:{$sum:"$quantity"}}}]) 
+--- this will find all size =large then it will group by name and also find the sum of quantity according to name
+[
+  { _id: 'Pepperoni', totlaQuantity: 30 },
+  { _id: 'Cheese', totlaQuantity: 10 }
+]
+db.orders.aggregate([{$match:{size:'medium'}},{$group:{_id:'$name',totlaQuantity:{$sum:"$quantity"}}}])
+--- this will find all size =medium then it will group by name and also find the sum of quantity according to name
+[
+  { _id: 'Pepperoni', totlaQuantity: 20 },
+  { _id: 'Vegan', totlaQuantity: 10 },
+  { _id: 'Cheese', totlaQuantity: 50 }
+]
+db.orders.aggregate([{$match:{size:'small'}},{$group:{_id:'$name',totlaQuantity:{$sum:"$quantity"}}}])
+--- this will find all size =small then it will group by name and also find the sum of quantity according to name
+[
+  { _id: 'Cheese', totlaQuantity: 15 },
+  { _id: 'Vegan', totlaQuantity: 10 },
+  { _id: 'Pepperoni', totlaQuantity: 10 }
+]
+db.orders.aggregate({$match:{size:'medium'}},{$group:{_id:"$name",count:{$count:{}}}})
+--- here we used count function 
+[
+  { _id: 'Pepperoni', count: 1 },
+  { _id: 'Cheese', count: 1 },
+  { _id: 'Vegan', count: 1 }
+]
+
+
+
+function of mongo DB
+$merge
+$out or $geoNear
+$match
+$group
+$sum
+$multiply
+$sort
+$avg
+$dateToString
